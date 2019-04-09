@@ -9,10 +9,8 @@ import java.util.ArrayList;
 
 public class AlphaBeta {
 
-    static int maxDepth = 12;
-
     public static PentagoMove alphabeta(int depth, int player, PentagoBoardState board, int alpha, int beta) {
-        if (depth++ == maxDepth || board.getAllLegalMoves().isEmpty()) {
+        if (depth++ == 5 || board.getAllLegalMoves().isEmpty()) {
             return board.getAllLegalMoves().get(0);   
         }
         if (player == PentagoBoardState.WHITE) {
