@@ -1,7 +1,7 @@
 package student_player;
 
 import boardgame.Move;
-
+import student_player.MyTools;
 import pentago_swap.PentagoPlayer;
 import pentago_swap.PentagoBoardState;
 
@@ -26,11 +26,11 @@ public class StudentPlayer extends PentagoPlayer {
         // You probably will make separate functions in MyTools.
         // For example, maybe you'll need to load some pre-processed best opening
         // strategies...
-        MyTools.getSomething();
-
-        Move myMove = boardState.getRandomMove();
-
-        // Return your move to be processed by the server.
+        long start = System.currentTimeMillis();
+        Move myMove = ABPrune.alphabeta(0, boardState.getTurnPlayer(), boardState, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        long end = System.currentTimeMillis();
+        System.out.println("move took " + (double)(end-start)/1000 + "s");
+        
         return myMove;
     }
-}
+} 
