@@ -7,7 +7,7 @@ import boardgame.Move;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 
-public class ABPrune {
+public class AlphaBeta {
 
     static int maxDepth = 12;
 

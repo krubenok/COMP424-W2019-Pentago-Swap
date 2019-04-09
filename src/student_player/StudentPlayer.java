@@ -27,9 +27,9 @@ public class StudentPlayer extends PentagoPlayer {
         // For example, maybe you'll need to load some pre-processed best opening
         // strategies...
         long start = System.currentTimeMillis();
-        Move myMove = ABPrune.alphabeta(0, boardState.getTurnPlayer(), boardState, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        Move myMove = AlphaBeta.alphabeta(0, boardState.getTurnPlayer(), boardState, Integer.MIN_VALUE, Integer.MAX_VALUE);
         long end = System.currentTimeMillis();
-        System.out.println("move took " + (double)(end-start)/1000 + "s");
+        System.out.println("time for move " + (double)(end-start)/1000 + "s");
         
         return myMove;
     }
