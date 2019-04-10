@@ -24,7 +24,7 @@
             "classPaths": ["bin"],
             "mainClass": "boardgame.Client",
             "projectName": "pentago-swap",
-            "args": ["student_player.StudentPlayer"]
+            "args": ["student_player.StudentPlayer", "0.tcp.ngrok.io", "17429"]
         },
         {
             "type": "java",

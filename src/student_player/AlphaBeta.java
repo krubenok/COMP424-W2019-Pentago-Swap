@@ -4,34 +4,34 @@ import pentago_swap.PentagoBoardState;
 import pentago_swap.PentagoMove;
 import java.util.AbstractMap;
 import java.util.ArrayList;
-
 public class AlphaBeta {
 
-    public static AbstractMap.SimpleEntry<Integer,PentagoMove> alphabeta(int depth, int player, PentagoBoardState board, int alpha, int beta) {
-        int bestScore = Heuristic.lines(board, player);
-        ArrayList<PentagoMove> moves = board.getAllLegalMoves();
-        // System.out.println("Alpha: "+alpha+" Beta: "+beta);
+    public static long timeLimit = System.currentTimeMillis() + 1900; 
 
-        if (depth <= 0 || board.getAllLegalMoves().isEmpty()) {
-            return new AbstractMap.SimpleEntry<>(bestScore, moves.get(0));
+    public static AbstractMap.SimpleEntry<Integer,PentagoMove> alphabeta(int depth, int player, PentagoBoardState board, int alpha, int beta) {
+        ArrayList<PentagoMove> moves = board.getAllLegalMoves();
+        PentagoMove bestMove =  moves.get(0);
+        int bestScore = Heuristic.eval(board, player);
+        AbstractMap.SimpleEntry<Integer,PentagoMove> bestPair = new AbstractMap.SimpleEntry<>(bestScore, bestMove); 
+        if (depth <= 0 || board.getAllLegalMoves().isEmpty() || System.currentTimeMillis() >= timeLimit){
+            return bestPair;
         }
         else if (player == PentagoBoardState.WHITE) {
-            // System.out.println("running max with depth:"+ depth--);
-            return max(depth-1, 1, board, alpha, beta); 
+            bestPair = max(depth, 1, board, alpha, beta); 
         }
         else {
-            // System.out.println("running min with depth:"+ depth--);
-            return min(depth-1, 0, board, alpha, beta); 
+            bestPair = min(depth, 0, board, alpha, beta); 
         }
+        return bestPair;
     }
 
     public static AbstractMap.SimpleEntry<Integer,PentagoMove> max(int depth, int player, PentagoBoardState board, int alpha, int beta) {
-        int score = Heuristic.lines(board, player);
+        int score = Heuristic.eval(board, player);
         PentagoMove bestMove = board.getAllLegalMoves().get(0);
         for (PentagoMove move : board.getAllLegalMoves()) {
             PentagoBoardState clone = (PentagoBoardState) board.clone();
             clone.processMove(move);
-            score = alphabeta(depth, player, clone, alpha, beta).getKey();
+            score = alphabeta(depth-1, player, clone, alpha, beta).getKey();
             if (score > alpha) {
                 alpha = score;  
                 bestMove = move;
@@ -44,17 +44,17 @@ public class AlphaBeta {
     }
 
     public static AbstractMap.SimpleEntry<Integer,PentagoMove> min(int depth, int player, PentagoBoardState board, int alpha, int beta) {
-        int score = Heuristic.lines(board, player);
+        int score = Heuristic.eval(board, player);
         PentagoMove bestMove = board.getAllLegalMoves().get(0);
         for (PentagoMove move : board.getAllLegalMoves()) {
             PentagoBoardState clone = (PentagoBoardState) board.clone();
             clone.processMove(move);
-            score = alphabeta(depth, player, clone, alpha, beta).getKey();
+            score = alphabeta(depth-1, player, clone, alpha, beta).getKey();
             if (score < beta) {
                 beta = score;  
                 bestMove = move;
             }
-            if (alpha >= beta) {
+            if (alpha >= beta) { 
                 break;
             }
         }
@@ -69,7 +69,7 @@ public class AlphaBeta {
         PentagoMove bestMove = nextmoves.get(0);
 
         if (nextmoves.isEmpty() || depth==0) {
-            bestScore = Heuristic.lines(pbs, player);
+            bestScore = Heuristic.eval(pbs, player);
         }  
         else {
             for (PentagoMove currentmove: nextmoves){
@@ -102,7 +102,7 @@ public class AlphaBeta {
 
 
         if (nextmoves.isEmpty() || depth==0) {
-            bestScore = Heuristic.lines(pbs, player);
+            bestScore = Heuristic.eval(pbs, player);
             return new AbstractMap.SimpleEntry<>(bestScore, bestMove);
         }
         else {

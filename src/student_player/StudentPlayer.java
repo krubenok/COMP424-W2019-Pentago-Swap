@@ -1,5 +1,6 @@
 package student_player;
 
+import boardgame.Board;
 import boardgame.Move;
 import student_player.MyTools;
 import pentago_swap.PentagoPlayer;
@@ -25,11 +26,12 @@ public class StudentPlayer extends PentagoPlayer {
     public Move chooseMove(PentagoBoardState boardState) {
         // You probably will make separate functions in MyTools.
         // For example, maybe you'll need to load some pre-processed best opening
-        // strategies...
-        long start = System.currentTimeMillis();
-        Move myMove = AlphaBeta.alphabeta(3, boardState.getTurnPlayer(), boardState, Integer.MIN_VALUE, Integer.MAX_VALUE).getValue();
-        long end = System.currentTimeMillis();
-        System.out.println("time for move " + (double)(end-start)/1000 + "s");
+        // strategies... 
+
+        // long start = System.currentTimeMillis();
+        Move myMove = AlphaBeta.alphabeta(MyTools.getDepth(boardState), boardState.getTurnPlayer(), boardState, Integer.MIN_VALUE, Integer.MAX_VALUE).getValue();
+        // long end = System.currentTimeMillis(); 
+        // System.out.println("time for move " + (double)(end-start)/1000 + "s");
         
         return myMove;
     }
