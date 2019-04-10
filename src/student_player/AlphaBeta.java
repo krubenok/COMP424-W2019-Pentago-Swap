@@ -1,68 +1,64 @@
 package student_player;
 
-import pentago_swap.PentagoBoard;
 import pentago_swap.PentagoBoardState;
 import pentago_swap.PentagoMove;
-import boardgame.Move;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 
 public class AlphaBeta {
 
-    public static PentagoMove alphabeta(int depth, int player, PentagoBoardState board, int alpha, int beta) {
-        if (depth++ == 5 || board.getAllLegalMoves().isEmpty()) {
-            return board.getAllLegalMoves().get(0);   
+    public static AbstractMap.SimpleEntry<Integer,PentagoMove> alphabeta(int depth, int player, PentagoBoardState board, int alpha, int beta) {
+        int bestScore = Heuristic.lines(board, player);
+        ArrayList<PentagoMove> moves = board.getAllLegalMoves();
+        // System.out.println("Alpha: "+alpha+" Beta: "+beta);
+
+        if (depth <= 0 || board.getAllLegalMoves().isEmpty()) {
+            return new AbstractMap.SimpleEntry<>(bestScore, moves.get(0));
         }
-        if (player == PentagoBoardState.WHITE) {
-            return max(depth, player, board, alpha, beta); 
+        else if (player == PentagoBoardState.WHITE) {
+            // System.out.println("running max with depth:"+ depth--);
+            return max(depth-1, 1, board, alpha, beta); 
         }
         else {
-            return min(depth, player, board, alpha, beta); 
+            // System.out.println("running min with depth:"+ depth--);
+            return min(depth-1, 0, board, alpha, beta); 
         }
     }
 
-    public static PentagoMove max(int depth, int player, PentagoBoardState board, int alpha, int beta) {
-        PentagoMove bestMove =  null;
-        // int bestScore = Integer.MIN_VALUE;
-
+    public static AbstractMap.SimpleEntry<Integer,PentagoMove> max(int depth, int player, PentagoBoardState board, int alpha, int beta) {
+        int score = Heuristic.lines(board, player);
+        PentagoMove bestMove = board.getAllLegalMoves().get(0);
         for (PentagoMove move : board.getAllLegalMoves()) {
             PentagoBoardState clone = (PentagoBoardState) board.clone();
             clone.processMove(move);
-            int score = Heuristic.lines(clone, player) ;
-
+            score = alphabeta(depth, player, clone, alpha, beta).getKey();
             if (score > alpha) {
                 alpha = score;  
-                // bestScore = score;
                 bestMove = move;
             }
-            
             if (alpha >= beta) {
                 break;
             }
         }
-        return bestMove;
+        return new AbstractMap.SimpleEntry<Integer, PentagoMove>(score, bestMove);
     }
 
-    public static PentagoMove min(int depth, int player, PentagoBoardState board, int alpha, int beta) {
-        PentagoMove bestMove =  null;
-        // int bestScore = Integer.MIN_VALUE;
-
+    public static AbstractMap.SimpleEntry<Integer,PentagoMove> min(int depth, int player, PentagoBoardState board, int alpha, int beta) {
+        int score = Heuristic.lines(board, player);
+        PentagoMove bestMove = board.getAllLegalMoves().get(0);
         for (PentagoMove move : board.getAllLegalMoves()) {
             PentagoBoardState clone = (PentagoBoardState) board.clone();
             clone.processMove(move);
-            int score = Heuristic.lines(clone, player) ;
-
+            score = alphabeta(depth, player, clone, alpha, beta).getKey();
             if (score < beta) {
                 beta = score;  
-                // bestScore = score;
                 bestMove = move;
             }
-            
             if (alpha >= beta) {
                 break;
             }
         }
-        return bestMove;
+        return new AbstractMap.SimpleEntry<Integer, PentagoMove>(score, bestMove);
     }
 
     public static AbstractMap.SimpleEntry<Integer, PentagoMove> minimax(int depth, int player, PentagoBoardState pbs) {
