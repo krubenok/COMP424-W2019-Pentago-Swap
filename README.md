@@ -1,4 +1,5 @@
 # COMP424 Pentago-Swap Report
+Kyle Rubenok - 260667187 - kyle@rubenok.ca
 
 ## Introduction and Background
 As stated in the project description, the goal of this project is to create an AI agent that can play, and hopefully win a game of Pentago-Swap as implemented by the Project TA, Matt Grenander. Pentago's original form is very similar to Tic-Tac-Toe with the modification on a six by six board and requiring a line of length 5 to win. The "swap" is a wrench thrown into the game to make it significantly more complex. In addition to placing a piece, Pentago-Swap requires the player to exchange two quadrants of the board increasing the breadth of the game tree significantly. 
@@ -6,7 +7,7 @@ As stated in the project description, the goal of this project is to create an A
 In order to implement this AI agent, we are provided a working game implemented in Java. The game implementation features a server that allows students to simulate competitions between our AI's to tune their performance. We rely heavily on the `PentagoBoardState` class to communicate the status of the board to our method. Additionally, we are provided a player which will make random moves to test our agent against.
 
 ## Technical Approach
-When faced with the problem of building this AI, I began to research implementations of AI agents in similar games to gain some inspiration for how I could implement something similar and what approach would be most effective. I settled on reseaching Tic-Tac-Toe and Connect4 implementations and evaluation functions for inspiration. I came across an implementation of Tic-Tac-Toe that used various different AI techniques seen in class. I started with the [`MiniMax.java` implementation from LazoCoder][1] as it was very simple to implement and it would allow me to test the validity of this family of algorithms to confirm viability while temporarily ignoring the runtime disadvantages that it presents.
+When faced with the problem of building this AI, I began to research implementations of AI agents in similar games to gain some inspiration for how I could implement something similar and what approach would be most effective. I settled on reseaching Tic-Tac-Toe and Connect4 implementations and evaluation functions for inspiration. I came across an implementation of Tic-Tac-Toe that used various different AI techniques seen in class. I started with the [`MiniMax.java` implementation from LazoCoder][1] `[1]`as it was very simple to implement and it would allow me to test the validity of this family of algorithms to confirm viability while temporarily ignoring the runtime disadvantages that it presents.
 
 Running my own initial implementation of minimax seemed effective against the Random Player and against me as an admittedly poor player of Pentago-Swap. Due to time constraints, I decided I would not test alternative families of AI algorithms such as Monte Carlo Tree Search, or machine learning techniques such as Reinforcement Learning. I decided my primary goal would be to improve the efficiency of my MiniMax implementation by adopting AlphaBeta Pruning to reduce the number of computations required and stay within the 2 second limit imposed by the competition. 
 
@@ -48,8 +49,9 @@ In addition to counting the length of lines, my heuristic did also prioritize fi
 #### No knowledge of swaps
 Finally, my heuristic lacked any knowledge of the board swaps and how to take advantage of them intelligently. I considered working on this but the implementation of it seemed quite complex for the time I had remaining so I was not able to execute on it. I would hypothesize that giving the evaluation function and understanding of the quadrant swaps so that I could take advantage of building two halves of the lines on separate quadrants to bring them together later would be very effective in improving it's performance.
 
-
-
 ## References
 [1]: https://github.com/LazoCoder/Tic-Tac-Toe "LazoCoder's AI Agent for Tic-Tac-Toe"
 [2]: images/AB_pruning.svg.png "Jez9999 [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0/)]"
+`[1]: https://github.com/LazoCoder/Tic-Tac-Toe "LazoCoder's AI Agent for Tic-Tac-Toe"`
+
+`[2]: images/AB_pruning.svg.png "Jez9999 [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0/)]"`
